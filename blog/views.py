@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
+from .forms import PostForm
 
 def post_list(request):
     email = request.user.email
@@ -29,9 +30,19 @@ def post(request):
     if request.user.is_authenticated() :
 
         if request.method == "POST":
-            
+            form = PostForm(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.author = request.user
+                post.save()
+
+                return render(request, 'post.html', {'form': form})
             pass
         else:
-            pass
+            form = PostForm()
+
+            return render(request, 'post.html', {'form': form})
     else:
         pass
+
+def view_post(request):
