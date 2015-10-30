@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from .forms import PostForm
+from .models import Post
 
 def post_list(request):
     email = request.user.email
@@ -36,7 +37,7 @@ def post(request):
                 post.author = request.user
                 post.save()
 
-                return render(request, 'post.html', {'form': form})
+                return redirect('/blog/view/{0}'.format(post.pk))
             pass
         else:
             form = PostForm()
@@ -45,4 +46,7 @@ def post(request):
     else:
         pass
 
-def view_post(request):
+def view_post(request,post_id):
+    if request.user.is_authenticated():
+        post=Post.objects.get(pk=post_id)
+        return render(request, 'blog/view_post.html', {'post':post})
