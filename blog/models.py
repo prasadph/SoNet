@@ -18,3 +18,15 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+class Vote(models.Model):
+    author = models.ForeignKey('auth.User')
+    post = models.ForeignKey(Post)
+    TYPES = (
+        ('U', 'Upvote'),
+        ('D', 'Downvote'),
+    )
+    _type = models.CharField(max_length=1,choices=TYPES)
+
+    def __str__(self):
+        return self._type
