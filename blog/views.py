@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import PostForm
+from .forms import PostForm, CommentsForm
 from .models import Post
 
 
@@ -36,11 +36,11 @@ def post(request):
         if request.method == "POST":
             form = PostForm(request.POST)
             if form.is_valid():
-                post = form.save(commit=False)
-                post.author = request.user
-                post.save()
+                post_obj = form.save(commit=False)
+                post_obj.author = request.user
+                post_obj.save()
 
-                return redirect('/blog/view/{0}'.format(post.pk))
+                return redirect('/blog/view/{0}'.format(post_obj.pk))
             pass
         else:
             form = PostForm()
@@ -52,5 +52,13 @@ def post(request):
 
 def view_post(request, post_id):
     if request.user.is_authenticated():
-        post = Post.objects.get(pk=post_id)
-        return render(request, 'blog/view_post.html', {'post': post})
+        form = CommentsForm(request.POST)
+        post_obj = Post.objects.get(pk=post_id)
+        comments = post_obj.get_comments()
+        tags = post_obj.get_tags()
+        return render(request, 'blog/view_post.html', {
+            'post': post_obj,
+            'comments': comments,
+            'form': form,
+            'tags': tags}
+        )

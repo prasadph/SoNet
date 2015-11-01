@@ -3,12 +3,15 @@ from django.utils import timezone
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     info = models.CharField(max_length=200)
     created_date = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.name
+
+    def get_posts(self):
+        return TagsPosts.objects.filter(tag=self)
 
 
 class Post(models.Model):
@@ -21,16 +24,27 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_votes(self):
+        query = Vote.objects.filter(post=self)
+        return query.__len__()
+
+    def get_comments(self):
+        return Comment.objects.filter(post=self)
+
+    def get_tags(self):
+        return TagsPosts.objects.filter(post=self)
+
 
 class TagsPosts(models.Model):
     class Meta:
-        unique_together = (('post', 'tag'),)
+        unique_together = ('post', 'tag')
+
     post = models.ForeignKey(Post)
     tag = models.ForeignKey(Tag)
     # created_date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return "'{0}' || '{1}'".format(self.post, self.tag)
+        return "'{0}' '{1}'".format(self.post.title, self.tag.name)
 
 
 class Comment(models.Model):
@@ -44,6 +58,9 @@ class Comment(models.Model):
 
 
 class Vote(models.Model):
+    class Meta:
+        unique_together = ('post', 'author')
+
     author = models.ForeignKey('auth.User')
     post = models.ForeignKey(Post)
     TYPES = (
@@ -54,5 +71,5 @@ class Vote(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self._type
+        return self.author.__str__() + " " + self._type
 
