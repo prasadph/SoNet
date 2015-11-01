@@ -4,6 +4,7 @@ from django.utils import timezone
 
 class Tag(models.Model):
     name = models.CharField(max_length=20)
+    created_date = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -14,19 +15,21 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
-    tag = models.ManyToManyField(Tag, through="TagPost", through_fields=("post", "tag"))
+    tag = models.ManyToManyField(Tag, through="TagsPosts", through_fields=("post", "tag"))
 
     def __str__(self):
         return self.title
 
 
-class TagPost(models.Model):
+class TagsPosts(models.Model):
+    # class Meta:
+    #     unique_together = (('post', 'tag'),)
     post = models.ForeignKey(Post)
     tag = models.ForeignKey(Tag)
-    created_date = models.DateField(default=timezone.now)
+    # created_date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return "{0} has {1} tag".format(self.post, self.tag)
+        return "'{0}' || '{1}'".format(self.post, self.tag)
 
 
 class Comment(models.Model):
