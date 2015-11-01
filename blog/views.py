@@ -1,11 +1,13 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import PostForm
 from .models import Post
 
+
 def post_list(request):
     email = request.user.email
-    return render(request, 'blog/post_list.html', {'email':email})
+    return render(request, 'blog/post_list.html', {'email': email})
+
 
 def auth_login(request):
     if request.method == "POST":
@@ -27,8 +29,9 @@ def auth_login(request):
     else:
         return render(request, 'login.html', {})
 
+
 def post(request):
-    if request.user.is_authenticated() :
+    if request.user.is_authenticated():
 
         if request.method == "POST":
             form = PostForm(request.POST)
@@ -46,7 +49,8 @@ def post(request):
     else:
         pass
 
-def view_post(request,post_id):
+
+def view_post(request, post_id):
     if request.user.is_authenticated():
-        post=Post.objects.get(pk=post_id)
-        return render(request, 'blog/view_post.html', {'post':post})
+        post = Post.objects.get(pk=post_id)
+        return render(request, 'blog/view_post.html', {'post': post})

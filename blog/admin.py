@@ -5,12 +5,13 @@ from .models import Post, Comment, Tag, Vote, TagsPosts
 admin.site.register(Comment)
 
 admin.site.register(Vote)
-admin.site.register(TagsPosts)
+# admin.site.register(TagsPosts)
 
 
 class AddTag(admin.StackedInline):
     model = TagsPosts
-    extra = 3
+    extra = 1
+    fieldsets = [(None, {'fields': ['tag']})]
 
 
 class Posts(admin.ModelAdmin):
@@ -21,7 +22,8 @@ class Posts(admin.ModelAdmin):
         (None, {'fields': ['author']}),
     ]
     inlines = [AddTag]
+    # filter_horizontal = [(None, {'fields': ['tag']})]
 
 
 admin.site.register(Tag)
-admin.site.register(Post,Posts)
+admin.site.register(Post, Posts)

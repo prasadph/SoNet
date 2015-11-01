@@ -4,6 +4,7 @@ from django.utils import timezone
 
 class Tag(models.Model):
     name = models.CharField(max_length=20)
+    info = models.CharField(max_length=200)
     created_date = models.DateField(default=timezone.now)
 
     def __str__(self):
