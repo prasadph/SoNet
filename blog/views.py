@@ -53,11 +53,20 @@ def post(request):
 def view_post(request, post_id):
     if request.user.is_authenticated():
         form = CommentsForm(request.POST)
+
         post_obj = Post.objects.get(pk=post_id)
-        comments = post_obj.get_comments()
         tags = post_obj.get_tags()
+        if request.method == 'POST':
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.post = post_obj
+                comment.author = request.user
+                comment.save()
+        comments = post_obj.get_comments()
+
         return render(request, 'blog/view_post.html', {
             'post': post_obj,
+            'votes': post_obj.get_votes(),
             'comments': comments,
             'form': form,
             'tags': tags}

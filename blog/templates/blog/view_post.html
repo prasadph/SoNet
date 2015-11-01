@@ -1,17 +1,23 @@
-<div><h1>{{post.title|title}}</h1></div>
-<p>{{post.text}}</p>
-<h4>Tags:{% for x in tags %}
-        <span>{{x.tag.name}}</span>
-    {% endfor %}</h4>
-<h3>Comments</h3>
 
+<div><h1>{{post.title|title}}</h1></div>
+<div>by {{post.author}}</div>
+<hr>
+<p>{{post.text}}</p>
+<hr>
+<div>Tags:{% for x in tags %}
+        <span>#{{x.tag.name}}</span>
+    {% endfor %}</div>
+<hr>
+<div>Votes <span>{{votes}}</span></div>
+<h3>Comments</h3>
 <div>
     {% for comment in comments %}
-        <div>{{comment}}</div>
+        <div><span>@{{comment.author}}</span>::<b>{{comment}}</b> :: <span>{{comment.created_date}}</span></div>
     {% endfor %}
 </div>
 <div>
     <form method="post" action="">
+        {% csrf_token %}
         {% for field in form %}
             {{ field.label_tag }} {{ field }}
         {% endfor %}
