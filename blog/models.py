@@ -1,14 +1,33 @@
 from django.db import models
 from django.utils import timezone
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
+    tag = models.ManyToManyField(Tag, through="TagPost", through_fields=("post", "tag"))
 
     def __str__(self):
         return self.title
+
+
+class TagPost(models.Model):
+    post = models.ForeignKey(Post)
+    tag = models.ForeignKey(Tag)
+    created_date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return "{0} has {1} tag".format(self.post, self.tag)
+
 
 class Comment(models.Model):
     author = models.ForeignKey('auth.User')
@@ -19,14 +38,17 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
 
+
 class Vote(models.Model):
     author = models.ForeignKey('auth.User')
     post = models.ForeignKey(Post)
     TYPES = (
-        ('U', 'Upvote'),
-        ('D', 'Downvote'),
+        ('U', 'Up vote'),
+        ('D', 'Down vote'),
     )
-    _type = models.CharField(max_length=1,choices=TYPES)
+    _type = models.CharField(max_length=1, choices=TYPES)
+    created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self._type
+
