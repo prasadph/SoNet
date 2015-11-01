@@ -22,8 +22,8 @@ class Post(models.Model):
 
 
 class TagsPosts(models.Model):
-    # class Meta:
-    #     unique_together = (('post', 'tag'),)
+    class Meta:
+        unique_together = (('post', 'tag'),)
     post = models.ForeignKey(Post)
     tag = models.ForeignKey(Tag)
     # created_date = models.DateField(default=timezone.now)
