@@ -8,7 +8,7 @@
         <span>#{{x.tag.name}}</span>
     {% endfor %}</div>
 <hr>
-<div>Votes <span>{{votes}}</span></div>
+<div>Votes <span>{{post.get_votes}}</span></div>
 <h3>Comments</h3>
 <div>
     {% for comment in comments %}

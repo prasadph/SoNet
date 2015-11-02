@@ -1,9 +1,37 @@
 <html>
     <head>
-        <title>Ola's blog</title>
+        <title>All Posts</title>
     </head>
     <body>
         <p>Hi there!{{ email }}</p>
-        <p>It works!</p>
+        <div>
+            <div>
+                {% for post in posts %}
+                <div>
+                    <div>
+                        <h2><a href="blog/post/{{post.pk}}">{{post.title}}</a></h2>
+                        <div>by {{post.author}}<span> on {{post.created_date}}</span></div>
+                        <div>
+                            {{post.text}}
+                        </div>
+                        <div>
+                            <h4>Tags</h4>
+                            {% for tag in post.get_tags %}
+                            <small>#{{tag.tag.name}}</small>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <div><h3>Comments</h3></div>
+                        {% for comment in post.get_comments %}
+                            <div>{{comment}}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
     </body>
 </html>

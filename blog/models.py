@@ -25,8 +25,7 @@ class Post(models.Model):
         return self.title
 
     def get_votes(self):
-        query = Vote.objects.filter(post=self)
-        return query.__len__()
+        return Vote.objects.filter(post=self).count()
 
     def get_comments(self):
         return Comment.objects.filter(post=self)

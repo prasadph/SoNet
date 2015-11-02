@@ -5,8 +5,14 @@ from .models import Post
 
 
 def post_list(request):
+    # messages.add_message(request, messages.INFO, 'Hello world.')
     email = request.user.email
-    return render(request, 'blog/post_list.html', {'email': email})
+    posts = Post.objects.all()
+    return render(request, 'blog/post_list.html', {
+        'email': email,
+        # 'messages': messages,
+        'posts': posts,
+    })
 
 
 def auth_login(request):
@@ -66,7 +72,6 @@ def view_post(request, post_id):
 
         return render(request, 'blog/view_post.html', {
             'post': post_obj,
-            'votes': post_obj.get_votes(),
             'comments': comments,
             'form': form,
             'tags': tags}
