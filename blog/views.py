@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import PostForm, CommentsForm
-from .models import Post
+from .models import Post, Tag
 
 
 def post_list(request):
@@ -76,3 +76,12 @@ def view_post(request, post_id):
             'form': form,
             'tags': tags}
         )
+
+
+def posts_by_tag(request, tag_id):
+    tag = Tag.objects.get(pk=tag_id)
+    posts = tag.get_posts()
+    return render(request, "tags/view.html", {
+        'tag': tag,
+        'posts': posts
+    })

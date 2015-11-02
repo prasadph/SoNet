@@ -9,8 +9,8 @@
                 {% for post in posts %}
                 <div>
                     <div>
-                        <h2><a href="blog/post/{{post.pk}}">{{post.title}}</a></h2>
-                        <div>by {{post.author}}<span> on {{post.created_date}}</span></div>
+                        <h2><a href="blog/posts/{{post.pk}}">{{post.title}}</a></h2>
+                        <div>by @{{post.author}}<span> on {{post.created_date}}</span></div>
                         <div>
                             {{post.text}}
                         </div>
@@ -24,7 +24,7 @@
                     <div>
                         <div><h3>Comments</h3></div>
                         {% for comment in post.get_comments %}
-                            <div>{{comment}}</div>
+                            <div><span>@{{comment.author}}</span>::{{comment}}</div>
                         {% endfor %}
                     </div>
                 </div>

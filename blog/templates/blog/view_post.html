@@ -5,7 +5,7 @@
 <p>{{post.text}}</p>
 <hr>
 <div>Tags:{% for x in tags %}
-        <span>#{{x.tag.name}}</span>
+        <a href="/blog/tags/{{x.tag.pk}}"><span>#{{x.tag.name}}</span></a>
     {% endfor %}</div>
 <hr>
 <div>Votes <span>{{post.get_votes}}</span></div>
