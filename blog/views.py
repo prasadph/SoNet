@@ -78,7 +78,7 @@ def view_post(request, post_id):
         )
 
 
-def posts_by_tag(request, tag_id):
+def posts_by_tag_id(request, tag_id):
     tag = Tag.objects.get(pk=tag_id)
 
     return render(request, "tags/view.html", {
