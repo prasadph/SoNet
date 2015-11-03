@@ -1,9 +1,25 @@
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 
 
+def validate_tag(value):
+    if not value.isalnum():
+        raise ValidationError('%s is not' % value)
+
+
+class Detail(models.Model):
+    user = models.OneToOneField('auth.User')
+    address = models.CharField(max_length=200, default="")
+    # dob = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return self.user.username
+
+
 class Tag(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, unique=True, validators=[validate_tag])
     info = models.CharField(max_length=200)
     created_date = models.DateField(default=timezone.now)
 
@@ -40,6 +56,7 @@ class TagsPosts(models.Model):
 
     post = models.ForeignKey(Post)
     tag = models.ForeignKey(Tag)
+
     # created_date = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -71,4 +88,3 @@ class Vote(models.Model):
 
     def __str__(self):
         return self.author.__str__() + " " + self._type
-

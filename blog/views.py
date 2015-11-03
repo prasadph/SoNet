@@ -45,8 +45,9 @@ def post(request):
                 post_obj = form.save(commit=False)
                 post_obj.author = request.user
                 post_obj.save()
+                # form.save_m2m()
 
-                return redirect('/blog/view/{0}'.format(post_obj.pk))
+                return redirect('/blog/posts/{0}'.format(post_obj.pk))
             pass
         else:
             form = PostForm()

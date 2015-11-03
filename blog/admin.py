@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import Post, Comment, Tag, Vote, TagsPosts
-
+from .models import Post, Comment, Tag, Vote, Detail, TagsPosts
 
 admin.site.register(Comment)
-
+admin.site.register(Detail)
 admin.site.register(Vote)
+
+
 # admin.site.register(TagsPosts)
 
 
