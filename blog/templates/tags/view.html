@@ -1,12 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-{{% for post in posts %}}
-    {{% post.title %}}
-{{endfor}}
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+<div><a href="/blog/tags/{{tag.pk}}">#{{tag.name}}</a></div>
+<div>
+    {% for postx in tag.get_posts %}
+    {% with post=postx.post %}
+    <div>
+        <div>
+            <h2><a href="blog/posts/{{post.pk}}">{{post.title}}</a></h2>
+
+            <div>by @{{post.author}}<span> on {{post.created_date}}</span></div>
+            <div>
+                {{post.text}}
+            </div>
+            <div>
+                <h4>Tags</h4>
+                {% for tag in post.get_tags %}
+                <a href="/blog/tags/{{tag.tag.pk}}"><small>#{{tag.tag.name}}</small></a>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <div><h3>Comments</h3></div>
+            {% for comment in post.get_comments %}
+            <div><span>@{{comment.author}}</span>::{{comment}}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+</div>
+{% endblock %}
