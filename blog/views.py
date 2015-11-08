@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
 from .forms import PostForm, CommentsForm
 from .models import Post, Tag
 
@@ -7,7 +7,7 @@ from .models import Post, Tag
 def post_list(request):
     # messages.add_message(request, messages.INFO, 'Hello world.')
     email = request.user.email
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('created_date')
     return render(request, 'blog/post_list.html', {
         'email': email,
         # 'messages': messages,
@@ -62,21 +62,14 @@ def view_post(request, post_id):
         form = CommentsForm(request.POST)
 
         post_obj = Post.objects.get(pk=post_id)
-        tags = post_obj.get_tags()
         if request.method == 'POST':
             if form.is_valid():
                 comment = form.save(commit=False)
                 comment.post = post_obj
                 comment.author = request.user
                 comment.save()
-        comments = post_obj.get_comments()
 
-        return render(request, 'blog/view_post.html', {
-            'post': post_obj,
-            'comments': comments,
-            'form': form,
-            'tags': tags}
-        )
+        return render(request, 'blog/view_post.html', {'post': post_obj, 'form': form, })
 
 
 def posts_by_tag_id(request, tag_id):

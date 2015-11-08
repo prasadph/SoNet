@@ -1,17 +1,20 @@
+{% extends "layout.html" %}
+{% load humanize %}
+{% block content %}
 <div><h1>{{post.title|title}}</h1></div>
 <div>by {{post.author}}</div>
 <hr>
 <p>{{post.text}}</p>
 <hr>
 <div>Tags:{% for tag in post.get_tags %}
-    <a href="/blog/tags/{{x.tag.pk}}"><span>#{{tag.name}}</span></a>
+    <a href="/blog/tags/{{tag.pk}}"><span>#{{tag.name}}</span></a>
     {% endfor %}
 </div>
 <hr>
 <div>Votes <span>{{post.get_votes}}</span></div>
 <h3>Comments</h3>
 <div>
-    {% for comment in comments %}
+    {% for comment in post.get_comments %}
     <div><span>@{{comment.author}}</span>::<b>{{comment}}</b> :: <span>{{comment.created_date}}</span></div>
     {% endfor %}
 </div>
@@ -23,3 +26,4 @@
         {% endfor %}
     </form>
 </div>
+{% endblock %}

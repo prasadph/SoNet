@@ -3,8 +3,8 @@
 {% block content %}
 <div><a href="{% url 'posts_by_tag' tag_id=tag.pk %}">#{{tag.name}}</a></div>
 <div>
-    {% for postx in tag.get_posts %}
-    {% with post=postx.post %}
+    {% for post in tag.get_posts %}
+
     <div>
         <div>
             <h2><a href="{% url 'view_post' post_id=post.pk %}">{{post.title}}</a></h2>
@@ -16,8 +16,8 @@
             <div>
                 <h4>Tags</h4>
                 {% for tag in post.get_tags %}
-                <a href="{% url 'posts_by_tag' tag_id=tag.tag.pk %}">
-                    <small>#{{tag.tag.name}}</small>
+                <a href="{% url 'posts_by_tag' tag_id=tag.pk %}">
+                    <small>#{{tag.name}}</small>
                 </a>
                 {% endfor %}
             </div>
@@ -25,11 +25,11 @@
         <div>
             <div><h3>Comments</h3></div>
             {% for comment in post.get_comments %}
-            <div><span>@{{comment.author}}</span>::{{comment.text}} <span>{{comment.created_date|naturaltime}}</span></div>
+            <div><span>@{{comment.author}}</span>::{{comment.text}} <span>{{comment.created_date|naturaltime}}</span>
+            </div>
             {% endfor %}
         </div>
     </div>
-    {% endwith %}
     {% endfor %}
 </div>
 {% endblock %}

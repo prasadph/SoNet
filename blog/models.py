@@ -27,7 +27,7 @@ class Tag(models.Model):
         return self.name
 
     def get_posts(self):
-        return TagsPosts.objects.filter(tag=self)
+        return Post.objects.filter(tagsposts__tag=self)
 
 
 class Post(models.Model):
