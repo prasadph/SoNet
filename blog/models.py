@@ -47,7 +47,7 @@ class Post(models.Model):
         return Comment.objects.filter(post=self)
 
     def get_tags(self):
-        return TagsPosts.objects.filter(post=self)
+        return Tag.objects.filter(tagsposts__post=self)
 
 
 class TagsPosts(models.Model):
