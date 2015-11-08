@@ -5,19 +5,18 @@
 <div>
     <div>
         {% for post in posts %}
-        <div>
+        <div class="ui-group-theme-c">
             <div>
                 <h2><a href="blog/posts/{{post.pk}}">{{post.title}}</a></h2>
-
-                <div>by @{{post.author}}<span> on {{post.created_date}}</span></div>
-                <div>
+                <small>by @{{post.author}}<span> on {{post.created_date}}</span></small>
+                <p>
                     {{post.text}}
-                </div>
+                </p>
                 <div>
-                    <h4>Tags:{% for tag in post.get_tags %}
+                    <h5>Tags:{% for tag in post.get_tags %}
                         <a href="/blog/tags/{{tag.pk}}"><span>#{{tag.name}}</span></a>
                         {% endfor %}
-                    </h4>
+                    </h5>
                 </div>
             </div>
             <div>
